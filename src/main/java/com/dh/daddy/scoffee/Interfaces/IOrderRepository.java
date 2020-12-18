@@ -1,7 +1,6 @@
 package com.dh.daddy.scoffee.Interfaces;
 
 import com.dh.daddy.scoffee.Models.Order;
-import com.dh.daddy.scoffee.Models.OrderedItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +20,6 @@ public interface IOrderRepository extends JpaRepository<Order , Integer> {
 
     @Query(value = "SELECT * FROM orders WHERE orderId = :orderId" , nativeQuery = true)
     Order fetchOrder( @Param("orderId") Integer orderId );
-
-//    @Query(value = "SELECT *  FROM ordereditems WHERE orderId = 1" , nativeQuery = tr
 
     @Modifying
     @Query(value = "UPDATE orders SET orderCompletedDate = :date WHERE orderId = :orderId " , nativeQuery = true)

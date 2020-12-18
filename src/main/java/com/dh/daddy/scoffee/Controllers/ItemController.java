@@ -4,7 +4,6 @@ import com.dh.daddy.scoffee.Dto.Item.ItemCreateDto;
 import com.dh.daddy.scoffee.Dto.Item.ItemDto;
 import com.dh.daddy.scoffee.Models.Item;
 import com.dh.daddy.scoffee.Services.ItemService;
-import com.dh.daddy.scoffee.Utility.CustomJwtTokenTokenDetails;
 import com.dh.daddy.scoffee.Utility.JwtDecodeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 public class ItemController {

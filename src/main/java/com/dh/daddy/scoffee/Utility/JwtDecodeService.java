@@ -1,5 +1,6 @@
 package com.dh.daddy.scoffee.Utility;
 
+import com.dh.daddy.scoffee.Dto.JWT.TokenPayloadDto;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Service
 public class JwtDecodeService {
 
-    public CustomJwtTokenTokenDetails decode() {
+    public TokenPayloadDto decode() {
 
 
         try{
@@ -28,11 +29,11 @@ public class JwtDecodeService {
             String permissionLevel = jOb.getString("permissionLevel");
             String username = jOb.getString("sub");
 
-            CustomJwtTokenTokenDetails customJwtTokenTokenDetails = new CustomJwtTokenTokenDetails();
-            customJwtTokenTokenDetails.setUsername(username);
-            customJwtTokenTokenDetails.setPermissionLevel(permissionLevel);
+            TokenPayloadDto tokenPayloadDto = new TokenPayloadDto();
+            tokenPayloadDto.setUsername(username);
+            tokenPayloadDto.setPermissionLevel(permissionLevel);
 
-            return customJwtTokenTokenDetails;
+            return tokenPayloadDto;
 
         }catch (Exception e){
             return null;

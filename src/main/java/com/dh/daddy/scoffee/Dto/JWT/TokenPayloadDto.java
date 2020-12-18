@@ -1,9 +1,9 @@
-package com.dh.daddy.scoffee.Utility;
+package com.dh.daddy.scoffee.Dto.JWT;
 
 import lombok.Data;
 
 @Data
-public class CustomJwtTokenTokenDetails {
+public class TokenPayloadDto {
     private String username;
     private String permissionLevel;
 }
