@@ -1,11 +1,14 @@
 package com.dh.daddy.scoffee.Controllers;
 
+import com.dh.daddy.scoffee.Dto.Item.ItemDto;
 import com.dh.daddy.scoffee.Dto.Order.OrderCreateDto;
 import com.dh.daddy.scoffee.Dto.Order.OrderDto;
 import com.dh.daddy.scoffee.Dto.Order.OrderedItemCreateDto;
 import com.dh.daddy.scoffee.Dto.Order.OrderedItemDto;
+import com.dh.daddy.scoffee.Models.Item;
 import com.dh.daddy.scoffee.Models.Order;
 import com.dh.daddy.scoffee.Models.OrderedItem;
+import com.dh.daddy.scoffee.Services.ItemService;
 import com.dh.daddy.scoffee.Services.OrderService;
 import com.dh.daddy.scoffee.Services.OrderedItemService;
 import org.modelmapper.ModelMapper;
@@ -25,6 +28,8 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private OrderedItemService orderedItemService;
+    @Autowired
+    private ItemService itemService;
 
     @PostMapping("/order")
     public ResponseEntity<?> createOrder(@RequestBody OrderCreateDto orderCreateDto){
@@ -87,10 +92,26 @@ public class OrderController {
         ModelMapper modelMapper = new ModelMapper();
 
         for ( OrderedItem orderedItem : orderedItemService.getOrderedItemsByOderId(orderId) ) {
-            items.add(modelMapper.map( orderedItem , OrderedItemDto.class ));
+
+            OrderedItemDto orderedItemToDto = modelMapper.map( orderedItem , OrderedItemDto.class );
+
+            OrderedItemDto orderItemToOrderItemDto = modelMapper.map( orderedItem , OrderedItemDto.class );
+
+            // get item by id
+            Item i = itemService.findItem(orderedItem.getItemId());
+
+            // check item is available or not
+            if(Objects.nonNull(i)){
+                // 1 -> convert item to Dto and set dto item in orderedItem
+                orderItemToOrderItemDto.setItem(modelMapper.map( i , ItemDto.class ));
+            }
+            items.add(orderItemToOrderItemDto);
         }
 
+        // convert oder to oderDto
         OrderDto completeOrder = modelMapper.map( oderRecode , OrderDto.class );
+
+        // set item list to this
         completeOrder.setListOfOrders(items);
 
         return new ResponseEntity<>(completeOrder, HttpStatus.OK);
