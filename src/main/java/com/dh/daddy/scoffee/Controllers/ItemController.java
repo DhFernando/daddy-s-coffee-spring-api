@@ -24,12 +24,17 @@ public class ItemController {
     @PostMapping(value = "/item")
     public ResponseEntity<?> addItem(@RequestBody ItemCreateDto itemCreateDto){
         try{
+            // check dto is null or not
             if(Objects.nonNull(itemCreateDto)){
+
+                // map dto to item model
                 ModelMapper modelMapper = new ModelMapper();
                 Item i  = modelMapper.map( itemCreateDto , Item.class);
                 i.setItemCreator( jwtDecodeService.decode().getUsername() );
 
                try{
+
+                   // try to save the item to database
                    Item createdItem = itemService.saveItem(i);
 
                    return new ResponseEntity<>(modelMapper.map(createdItem , ItemDto.class) , HttpStatus.OK);
