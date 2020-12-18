@@ -31,7 +31,7 @@ public class ItemController {
                 ModelMapper modelMapper = new ModelMapper();
                 Item i  = modelMapper.map( itemCreateDto , Item.class);
                 i.setItemCreator( jwtDecodeService.decode().getUsername() );
-
+                
                try{
 
                    // try to save the item to database
@@ -64,7 +64,6 @@ public class ItemController {
     @DeleteMapping(value = "/item/{id}")
     public ResponseEntity<?> deleteItem(@PathVariable Integer id){
         try {
-            ModelMapper modelMapper = new ModelMapper();
             Item fetchedItem = itemService.findItem( id );
             if(Objects.nonNull(fetchedItem)){
                 itemService.remove(fetchedItem);
