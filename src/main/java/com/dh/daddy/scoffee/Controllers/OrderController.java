@@ -135,7 +135,21 @@ public class OrderController {
                     List<OrderedItemDto> orderedItemDtos = new ArrayList<>();
 
                     for ( OrderedItem fetchedOrderedItem : fetchedOrderedItems ) {
-                        orderedItemDtos.add(modelMapper.map(fetchedOrderedItem , OrderedItemDto.class));
+
+                        OrderedItemDto fetchOrderedItemToOrderedItemToDto =
+                                modelMapper.map(fetchedOrderedItem , OrderedItemDto.class);
+
+                        // fetch item by fetched oder's item id
+                        Item i = itemService.findItem(fetchedOrderedItem.getItemId());
+
+                        // check item is available or not
+                        if(Objects.nonNull(i)){
+
+                            // convert available item to dto and add to oder item list
+                            fetchOrderedItemToOrderedItemToDto.setItem( modelMapper.map(i , ItemDto.class) );
+                        }
+
+                        orderedItemDtos.add(fetchOrderedItemToOrderedItemToDto);
                     }
                     fetchedOrder.setListOfOrders( orderedItemDtos );
 
