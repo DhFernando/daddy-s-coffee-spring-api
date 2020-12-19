@@ -172,7 +172,7 @@ public class OrderController {
 
     }
 
-    @GetMapping("/order/{orderId}/complete")
+    @PutMapping("/order/{orderId}/complete")
     public ResponseEntity<?> oderMakeComplete(@PathVariable Integer orderId){
         try{
             Order order = orderService.getOrderByOrderId(orderId);
