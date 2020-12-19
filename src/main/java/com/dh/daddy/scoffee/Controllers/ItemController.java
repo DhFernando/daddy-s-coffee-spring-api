@@ -62,11 +62,15 @@ public class ItemController {
         }
     }
 
+    // delete items
     @DeleteMapping(value = "/item/{id}")
     public ResponseEntity<?> deleteItem(@PathVariable Integer id){
         try {
+            // check item is on BD or not
             Item fetchedItem = itemService.findItem( id );
             if(Objects.nonNull(fetchedItem)){
+
+                //call to service to delete item
                 itemService.remove(fetchedItem);
                 return new ResponseEntity<>("Item Removed" , HttpStatus.OK);
             }else{
