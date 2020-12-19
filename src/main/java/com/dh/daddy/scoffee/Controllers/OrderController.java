@@ -53,7 +53,13 @@ public class OrderController {
                                   orderedItem.setOrderId(savedOrdered.getOrderId());
 
                                   OrderedItem savedItem = orderedItemService.insertOrderedItems(orderedItem);
-                                  savedOrders.add( modelMapper.map( savedItem , OrderedItemDto.class ) );
+
+                                  Item  item  = itemService.findItem(savedItem.getItemId());
+                                  OrderedItemDto finalOrderedItemDto =  modelMapper.map( savedItem , OrderedItemDto.class );
+                                  if(Objects.nonNull(item)){
+                                      finalOrderedItemDto.setItem(modelMapper.map(item , ItemDto.class));
+                                  }
+                                  savedOrders.add( finalOrderedItemDto );
                               }
 
                               OrderDto completedOrder = modelMapper.map( savedOrdered , OrderDto.class );
