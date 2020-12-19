@@ -2,6 +2,7 @@ package com.dh.daddy.scoffee.Controllers;
 
 import com.dh.daddy.scoffee.Dto.Item.ItemCreateDto;
 import com.dh.daddy.scoffee.Dto.Item.ItemDto;
+import com.dh.daddy.scoffee.Dto.Item.ItemUpdateDto;
 import com.dh.daddy.scoffee.Models.Item;
 import com.dh.daddy.scoffee.Services.ItemService;
 import com.dh.daddy.scoffee.Utility.JwtDecodeService;
@@ -11,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 public class ItemController {
@@ -46,6 +49,20 @@ public class ItemController {
             }
         }catch (Exception e){
             return new ResponseEntity<>("Internal Server Error" , HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/items")
+    public ResponseEntity<?> fetchAllItems(){
+        try{
+
+            return new ResponseEntity<>( itemService.getAllItems().stream().map(item -> {
+                ModelMapper modelMapper = new ModelMapper();
+                return modelMapper.map( item , ItemDto.class );
+            }).collect(Collectors.toList()) , HttpStatus.OK ) ;
+
+        }catch (Exception e){
+            return new ResponseEntity<>("Something went wrong" , HttpStatus.CONFLICT);
         }
     }
 
@@ -84,14 +101,14 @@ public class ItemController {
 
     //Item update
     @PutMapping("item/{id}")
-    public ResponseEntity<?> updateItem(@PathVariable Integer id , @RequestBody ItemDto updatedItem){
+    public ResponseEntity<?> updateItem(@PathVariable Integer id , @RequestBody ItemUpdateDto updatedItem){
         try {
             Item i = itemService.findItem(id);
             if(Objects.nonNull(i)){
                 if(Objects.nonNull(updatedItem)){
                     ModelMapper modelMapper = new ModelMapper();
 
-                    i.setItemCreator(updatedItem.getItemCreator());
+                    i.setItemCreator(jwtDecodeService.decode().getUsername());
                     i.setDescription(updatedItem.getDescription());
                     i.setItemName(updatedItem.getItemName());
                     i.setPrice( updatedItem.getPrice() );
