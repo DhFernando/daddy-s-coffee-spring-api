@@ -49,6 +49,7 @@ public class ItemController {
         }
     }
 
+    // fetch item by item id
     @GetMapping(value = "/item/{id}")
     public ResponseEntity<?> getItem(@PathVariable Integer id){
         try {
