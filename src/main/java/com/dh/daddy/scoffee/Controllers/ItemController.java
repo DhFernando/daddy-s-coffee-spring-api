@@ -78,4 +78,32 @@ public class ItemController {
         }
     }
 
+    //Item update
+    @PutMapping("item/{id}")
+    public ResponseEntity<?> updateItem(@PathVariable Integer id , @RequestBody ItemDto updatedItem){
+        try {
+            Item i = itemService.findItem(id);
+            if(Objects.nonNull(i)){
+                if(Objects.nonNull(updatedItem)){
+                    ModelMapper modelMapper = new ModelMapper();
+
+                    i.setItemCreator(updatedItem.getItemCreator());
+                    i.setDescription(updatedItem.getDescription());
+                    i.setItemName(updatedItem.getItemName());
+                    i.setPrice( updatedItem.getPrice() );
+
+                    itemService.saveItem( i ) ;
+
+                    return new ResponseEntity<>(i , HttpStatus.OK);
+                }else{
+                    return new ResponseEntity<>("Invalid updated item" , HttpStatus.BAD_REQUEST);
+                }
+            }else{
+                return new ResponseEntity<>( "Item not found" , HttpStatus.NOT_FOUND );
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("Internal server Error" , HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
