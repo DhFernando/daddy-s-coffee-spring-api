@@ -7,7 +7,7 @@ i have used _authentication_ for JWT
 ### **For the First user you can you this dummy data**
 
 -inclued these Deatails manually to database
-## SQL file has provided in repository 
+#### SQL file has provided in repository 
 
 ```
 username : firstUsername,
