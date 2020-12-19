@@ -2,7 +2,7 @@
 
 **About api Authentication**
 
-we used _authentication_ for JWT
+i have used _authentication_ for JWT
 
 ### **For the First user you can you this dummy data**
 
